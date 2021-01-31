@@ -45,14 +45,16 @@ hist = macd - signal
 
 // -------------- RENDERING -------------- //
 // RSI
-plot(rsi, 'RSI')
+// plot(rsi, 'RSI')
 // STOCHASTIC
-plot(stoch_k, 'STOCH K', color=color.green)
-plot(stoch_d, 'STOCH D', color=color.red)
+// plot(stoch_k, 'STOCH K', color=color.green)
+// plot(stoch_d, 'STOCH D', color=color.red)
 // STOCHASTIC RSI
-plot(k, 'STOCH RSI K', color=color.orange)
-plot(d, 'STOCH RSI D', color=color.purple)
+// plot(k, 'STOCH RSI K', color=color.orange)
+// plot(d, 'STOCH RSI D', color=color.purple)
 
-// fill(b1, b2, title = 'Background Bollinger', color=#198787, transp=95)
-// plotshape(overbuy, 'Overbuy', style=shape.triangleup, location=location.abovebar, color=color.green, size=size.tiny)
-// plotshape(oversell, 'Oversell', style=shape.triangledown, location=location.belowbar, color=color.red, size=size.tiny)
+overSell = stoch_k < 20 and k < 20 and rsi < 30 and crossover(k,d)
+plotshape(overSell, 'Oversell', style=shape.triangledown, location=location.belowbar, color=color.red, size=size.tiny)
+
+overBuy = stoch_k > 80 and k > 80 and rsi > 70and crossunder(k,d)
+plotshape(overBuy, 'Overbuy', style=shape.triangleup, location=location.abovebar, color=color.green, size=size.tiny)
