@@ -5,6 +5,7 @@ strategy(title='Common', overlay=true, initial_capital=1000, default_qty_type=st
 start = timestamp(2020, 01, 01, 00, 00, 00)
 end = timestamp(2022, 01, 01, 00, 00, 00)
 period = time >= start and time <= end
+OpenTrades = strategy.opentrades > 0
 
 
 // -------------- INPUTS -------------- //
@@ -21,10 +22,10 @@ lengthRSI = input(14, 'Stoch RSI - Length', minval=1)
 lengthStoch = input(14, "Stoch RSI - Length", minval=1)
 src = input(close, title='Stoch RSI - Source')
 // MACD
-fast_length = input(title='MACD - Fast Length', type=input.integer, defval=12)
-slow_length = input(title='MACD - Slow Length', type=input.integer, defval=26)
+fast_length = input(8, title='MACD - Fast Length', type=input.integer)
+slow_length = input(21, title='MACD - Slow Length', type=input.integer)
 macd_src = input(title='MACD - Source', type=input.source, defval=close)
-signal_length = input(title='MACD - Signal Smoothing', type=input.integer, minval = 1, maxval = 50, defval = 9)
+signal_length = input(20, title='MACD - Signal Smoothing', type=input.integer, minval = 1, maxval = 50)
 sma_source = input(title='MACD - Simple MA(Oscillator)', type=input.bool, defval=false)
 sma_signal = input(title='MACD - Simple MA(Signal Line)', type=input.bool, defval=false)
 // OVERSELL - OVERBUY
@@ -55,11 +56,32 @@ hist = macd - signal
 
 
 // -------------- STRATEGY -------------- //
-OpenTrades = strategy.opentrades > 0
+crossOver = crossover(stoch_rsi_k, stoch_rsi_d)
+crossUnder = crossunder(stoch_rsi_k, stoch_rsi_d)
 
-buySignal = stoch_k < stoch_k_oversell and stoch_rsi_k < stoch_rsi_k_oversell and rsi < rsi_oversell and crossover(stoch_rsi_k, stoch_rsi_d) and not OpenTrades
-sellSignal = stoch_k > stoch_k_overbuy and stoch_rsi_k > stoch_rsi_k_overbuy and rsi > rsi_overbuy and crossunder(stoch_rsi_k, stoch_rsi_d) and OpenTrades
+buyCounter = 0
+if period and not OpenTrades
+    if stoch_k < stoch_k_oversell and stoch_rsi_k < stoch_rsi_k_oversell
+        buyCounter := buyCounter + 2
+    if rsi < rsi_oversell
+        buyCounter := buyCounter + 1
+    if crossOver
+        buyCounter := buyCounter + 1
+    if macd > 0 and macd < close[1]
+        buyCounter := buyCounter + 1
+buySignal = buyCounter > 3
 
-if period
-    strategy.order('buy', true, 1, when = buySignal)
-    strategy.order('sell', false, 1, when = sellSignal)
+sellCounter = 0
+if period and OpenTrades
+    if stoch_k > stoch_k_overbuy and stoch_rsi_k > stoch_rsi_k_overbuy
+        sellCounter := sellCounter + 2
+    if rsi > rsi_overbuy
+        sellCounter := sellCounter + 1
+    if crossUnder
+        sellCounter := sellCounter + 1
+    if macd < 0 and macd > close[1]
+        sellCounter := sellCounter + 1
+sellSignal = sellCounter > 3
+
+strategy.order('buy', true, 1, when = buySignal, comment='power: ' + tostring(buyCounter))
+strategy.order('sell', false, 1, when = sellSignal, comment='power: ' + tostring(sellCounter))
