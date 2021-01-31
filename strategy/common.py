@@ -28,12 +28,12 @@ signal_length = input(title='MACD - Signal Smoothing', type=input.integer, minva
 sma_source = input(title='MACD - Simple MA(Oscillator)', type=input.bool, defval=false)
 sma_signal = input(title='MACD - Simple MA(Signal Line)', type=input.bool, defval=false)
 // OVERSELL - OVERBUY
-stoch_k_oversell = input(20, title='Stoch K - Oversell', type=input.integer, minval=1)
-stoch_rsi_k_oversell = input(20, title='Stoch RSI K - Oversell', type=input.integer, minval=1)
-rsi_oversell = input(30, title='RSI - Oversell', type=input.integer, minval=1)
-stoch_k_overbuy = input(80, title='Stoch K - Overbuy', type=input.integer, minval=1)
-stoch_rsi_k_overbuy = input(80, title='Stoch RSI K - Overbuy', type=input.integer, minval=1)
-rsi_overbuy = input(70, title='RSI - Overbuy', type=input.integer, minval=1)
+stoch_k_oversell = input(25, title='Stoch K - Oversell', type=input.integer, minval=1)
+stoch_rsi_k_oversell = input(25, title='Stoch RSI K - Oversell', type=input.integer, minval=1)
+rsi_oversell = input(38, title='RSI - Oversell', type=input.integer, minval=1)
+stoch_k_overbuy = input(75, title='Stoch K - Overbuy', type=input.integer, minval=1)
+stoch_rsi_k_overbuy = input(75, title='Stoch RSI K - Overbuy', type=input.integer, minval=1)
+rsi_overbuy = input(62, title='RSI - Overbuy', type=input.integer, minval=1)
 
 
 // -------------- LOGIC -------------- //
