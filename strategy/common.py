@@ -1,6 +1,6 @@
 //@version=4
 
-strategy(title='Common', overlay=true, default_qty_type=strategy.cash, default_qty_value=1000, currency='EUR', commission_type=strategy.commission.percent, commission_value=0.26)
+strategy(title='Common', overlay=true, initial_capital=1000, default_qty_type=strategy.cash, default_qty_value=1000, currency='EUR', commission_type=strategy.commission.percent, commission_value=0.26)
 
 start = timestamp(2020, 01, 01, 00, 00, 00)
 end = timestamp(2022, 01, 01, 00, 00, 00)
@@ -83,7 +83,8 @@ if period and openTrades and strategy.position_avg_price < open
         sellCounter := sellCounter + 1
 sellSignal = sellCounter > 3
 
-strategy.order('buy', true, 1, when = buySignal, comment=tostring(close[0]))
-strategy.order('sell', false, 1, when = sellSignal, comment=tostring(close[0]))
+closeComment = tostring(close)
 
-plot(strategy.position_avg_price, title = 'buy', color=color.red, linewidth = 2)
+// -------------- ORDERS -------------- //
+strategy.entry('buy', strategy.long, when=buySignal, comment=closeComment)
+strategy.close('buy', when=sellSignal, comment=closeComment) 
