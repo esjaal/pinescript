@@ -1,6 +1,10 @@
 //@version=4
 
-strategy(title='b2o', overlay=true, initial_capital=1000, default_qty_type=strategy.percent_of_equity, default_qty_value=100, currency='EUR', commission_type=strategy.commission.percent, commission_value=0.26, pyramiding=10)
+// Timeframe: 1h
+// Pair: XBT/EUR
+// Fees: Kraken Exchange
+
+strategy(title='b2o', overlay=true, initial_capital=1000, default_qty_type=strategy.percent_of_equity, default_qty_value=100, currency='EUR', commission_type=strategy.commission.percent, commission_value=0.26)
 
 start = timestamp(2020, 01, 01, 00, 00, 00)
 end = timestamp(2022, 01, 01, 00, 00, 00)
@@ -17,5 +21,5 @@ buySignal = diff < lostPercentage and not openTrades
 sellSignal = close > close[1] * gainPercentage and openTrades
 
 if period
-    strategy.order('buy', true, 1, when = buySignal)
-    strategy.order('sell', false, 1, when = sellSignal)
+    strategy.entry('buy', strategy.long, when=buySignal)
+    strategy.close('buy', when=sellSignal)
