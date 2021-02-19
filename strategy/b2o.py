@@ -1,12 +1,12 @@
 //@version=4
 
 // Timeframe: 1h
-// Pair: XBT/EUR
-// Fees: Kraken Exchange
+// Pair: BTC/BUSD
+// Fees: Binance Exchange
 
-strategy(title='b2o', overlay=true, initial_capital=1000, default_qty_type=strategy.percent_of_equity, default_qty_value=100, currency='EUR', commission_type=strategy.commission.percent, commission_value=0.26)
+strategy(title='b2o', overlay=true, initial_capital=1000, default_qty_type=strategy.percent_of_equity, default_qty_value=100, currency='EUR', commission_type=strategy.commission.percent, commission_value=0)
 
-start = timestamp(2020, 01, 01, 00, 00, 00)
+start = timestamp(2021, 01, 01, 00, 00, 00)
 end = timestamp(2022, 01, 01, 00, 00, 00)
 period = time >= start and time <= end
 openTrades = strategy.opentrades > 0
