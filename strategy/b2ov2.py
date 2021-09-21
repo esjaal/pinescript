@@ -1,6 +1,6 @@
 // @version=4
 
-// Timeframe: 30m
+// Timeframe: 30m (48 bars)
 // Crypto: Multi-pair
 // Pairs: AAVE, ADA, AVAX, BNB, BTC, DOT, EGLD, EOS, 
 //   ETH, FIL, FTM, FTT, GRT, LINK, LTC, LUNA, MATIC, MOVR
@@ -19,7 +19,7 @@ end = timestamp(2022, 01, 01, 00, 00, 00)
 period = time >= start and time <= end
 openTrades = strategy.opentrades > 0
 
-// Trigger alert for 20% decrease between 48 bars
+// Trigger alert for 20% decrease on 24h
 decrease = input(20, title='Moving down %', minval=5)
 bars = input(48, title='Bars number', minval=2)
 benefits = input(5, title='Take Profit (%)', minval=1)
